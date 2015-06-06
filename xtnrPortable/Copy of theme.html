@@ -1,0 +1,567 @@
+<{php}>
+//*********************   custom main menu    *********************//
+// There must be an easier way to achieve this but this is what I  //
+// came up with. Smarty programming seems to be acting wierd in a  //
+// template so i have to do it the old fashioned way: straight PHP //
+// Broke up the menu building into simple functions to keep HTML   //
+// tags out of the menu code. ONLY EDIT THE $htmlcode="..."; LINES //
+// It's dirty but it works.                                        //
+// -xoopstuner                                                     //
+//*****************************************************************//
+
+//mini template for custom main menu
+function xtnrMenu($Menu,$activeModuleName,$activeModuleLink,$activeModuleSublinks){
+	$htmlcode="
+	     <table border=0 cellspacing=0 cellpadding=0 id=\"menu1\" class=\"NavMenu\">
+           <tr>
+              <td>
+	<a id=\"menu1-0\" class=\"button\" href=\"javascript:void(0)\"><img src=\"".XOOPS_URL."/themes/xtnrPortable/images/theme_08.gif\" width=\"77\" height=\"24\" border=\"0\"></a><div id=\"menu1-0-section\" style=\"width: 119px; top: 104px; left: 76px; visibility: hidden; z-index: -1;\" class=\"section\">
+                   <table border=0 cellspacing=0 cellpadding=0>
+                     <tr>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_1.gif\"></td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_2.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_2.gif\"></td>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_3.gif\"></td>
+                     </tr>
+                     <tr>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_4.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_4.gif\"></td>
+                       <td >
+                       
+                       $Menu
+                       
+                       </td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_5.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_5.gif\"></td>
+                     </tr>
+                     <tr>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_6.gif\"></td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_7.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_7.gif\"></td>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_8.gif\"></td>
+                     </tr>
+                   </table>
+              </div>
+			</td>
+          </tr>
+        </table>
+	";
+	return $htmlcode;
+}
+
+
+//mini template for menu link and sublinks placement
+function xtnrMenuLink($linktitle,$link,$sublinks){
+	$htmlcode="
+                   <a id=\"menu1-0-0\" class=\"item\" href=\"#\">$linktitle <img id=\"menu1-0-1-arrow\" class=\"arrow\" src=\"".XOOPS_URL."/themes/xtnrPortable/js/menuarrow1.gif\"></a>
+                   <div id=\"menu1-0-section\" style=\"width: 130px; top: 104px; left: 132px; visibility: hidden; z-index: -1;\" class=\"section\">
+                   <table border=0 cellspacing=0 cellpadding=0  >
+                     <tr>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_1.gif\"></td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_2.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_2.gif\"></td>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_3.gif\"></td>
+                     </tr>
+                     <tr>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_4.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_4.gif\"></td>
+                       <td >
+                       
+                       <a href=$link class=\"item\">$linktitle Homepage</a>
+                       $sublinks
+                       
+                       </td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_5.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_5.gif\"></td>                     </tr>
+                     </tr>
+                     <tr>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_6.gif\"></td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_7.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_7.gif\"></td>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_8.gif\"></td>
+                     </tr>
+                   </table></div>";
+	return $htmlcode;
+}
+
+
+//mini template for menu link when there are no sublinks, active takes precidence
+function xtnrMenuLinkEmpty($linktitle,$link){
+	$htmlcode="
+                  <a href=$link class=\"item\">$linktitle</a>
+	";
+	return $htmlcode;
+}
+
+
+//mini template for menu link and sublinks placement for currently selected module
+function xtnrMenuLinkActive($linktitle,$link,$sublinks){
+	$htmlcode="
+                   <a id=\"menu1-0-0\" class=\"item\" href=\"#\">$linktitle <img id=\"menu1-0-1-arrow\" class=\"arrow\" src=\"".XOOPS_URL."/themes/xtnrPortable/js/menuarrow1.gif\"></a>
+                   <div id=\"menu1-0-section\" style=\"width: 130px; top: 104px; left: 132px; visibility: hidden; z-index: -1;\" class=\"section\">
+
+                   <table border=0 cellspacing=0 cellpadding=0>
+                     <tr>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_1.gif\"></td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_2.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_2.gif\"></td>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_3.gif\"></td>
+                     </tr>
+                     <tr>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_4.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_4.gif\"></td>
+                       <td >
+                       
+                       <a href=$link class=\"item\">$linktitle Homepage</a>
+                       $sublinks
+                       
+                       </td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_5.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_5.gif\"></td>                     </tr>
+                     </tr>
+                     <tr>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_6.gif\"></td>
+                       <td background=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_7.gif\"><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_7.gif\"></td>
+                       <td><img  src=\"".XOOPS_URL."/themes/xtnrPortable/js/menu_cor_8.gif\"></td>
+                     </tr>
+                   </table>
+                   </div>
+	";
+	return $htmlcode;
+}
+
+
+//mini template for sublinks 
+function xtnrMenuSublink($linktitle,$link){
+	$htmlcode="
+	<a href=$link class=\"item\">$linktitle</a>
+	";
+	return $htmlcode;
+}
+
+
+//mini template for sublinks of currently active module
+function xtnrMenuSublinkActive($linktitle,$link){
+	$htmlcode="
+	<a href=$link class=\"item\">$linktitle</a>
+	";
+	return $htmlcode;
+}
+
+
+
+	
+	//modified main menu block code
+	global $xoopsUser,$xoopsModule,$customMainMenu,$activeModuleName,$activeModuleLink,$activeModuleSublinks,$temp;
+	$block = array();
+	$block['lang_home'] = _MB_SYSTEM_HOME;
+	$block['lang_close'] = _CLOSE;
+	$module_handler =& xoops_gethandler('module');
+	$criteria = new CriteriaCompo(new Criteria('hasmain', 1));
+	$criteria->add(new Criteria('isactive', 1));
+	$criteria->add(new Criteria('weight', 0, '>'));
+	$modules =& $module_handler->getObjects($criteria, true);
+	$moduleperm_handler =& xoops_gethandler('groupperm');
+	$groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+	$read_allowed =& $moduleperm_handler->getItemIds('module_read', $groups);
+	foreach (array_keys($modules) as $i) {	
+		if (in_array($i, $read_allowed)) {
+			$modulesname = $modules[$i]->getVar('name');
+			$moduledirectory = $modules[$i]->getVar('dirname');
+			$sublinks =& $modules[$i]->subLink();
+			$sublinkshtmlout = '';
+
+
+			if (empty($xoopsModule)) {
+				//system module; fill in defaults
+				$mid=-1;
+				$activeModuleName="Home";
+				$activeModuleLink=XOOPS_URL;
+				$activeModuleSublinks='';
+			} else {
+				$mid=$xoopsModule->getVar('mid');
+			}
+			
+
+			//build sublinks for module
+			if ((count($sublinks) > 0)) {
+				if ($i == $mid) {
+					foreach($sublinks as $sublink){
+						//current active  module
+						$sublinkshtmlout =$sublinkshtmlout.xtnrMenuSublinkActive ($sublink['name'],XOOPS_URL.'/modules/'.$modules[$i]->getVar('dirname').'/'.$sublink['url'] );
+						$activeModuleSublinks =$activeModuleSublinks.xtnrMenuSublinkActive ($sublink['name'],XOOPS_URL.'/modules/'.$modules[$i]->getVar('dirname').'/'.$sublink['url'] );
+					}	
+				} else {
+					foreach($sublinks as $sublink){
+						//not current active module
+						$sublinkshtmlout =$sublinkshtmlout.xtnrMenuSublink     ($sublink['name'],XOOPS_URL.'/modules/'.$modules[$i]->getVar('dirname').'/'.$sublink['url'] );
+					}
+				}
+			} else {
+				$block['modules'][$i]['sublinks'] = array();
+			}
+
+
+			
+			// Build Main Menu Link From mini template
+			if ($i == $mid) {	
+				//current active module
+				$activeModuleName = $modulesname;
+				$customMainMenu = $customMainMenu.xtnrMenuLinkActive($modulesname, XOOPS_URL.'/modules/'.$moduledirectory, $sublinkshtmlout);
+				$activeModuleLink = $activeModuleLink.xtnrMenuLinkActive($modulesname, XOOPS_URL.'/modules/'.$moduledirectory, $sublinkshtmlout); 
+			} else {
+				//not current active module
+				if ($sublinkshtmlout==''){
+					$customMainMenu =$customMainMenu.xtnrMenuLinkEmpty($modulesname, XOOPS_URL.'/modules/'.$moduledirectory);
+				} else {
+					$customMainMenu =$customMainMenu.xtnrMenuLink($modulesname, XOOPS_URL.'/modules/'.$moduledirectory, $sublinkshtmlout);
+				}
+			}
+									
+		}
+	}
+	$customMainMenu = xtnrMenu($customMainMenu,$activeModuleName,$activeModuleLink,$activeModuleSublinks);
+	//no output if no modules
+	if (count(array_keys($modules))==0) {$customMainMenu ='';}
+
+<{/php}>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=<{$xoops_charset}>" />
+<meta http-equiv="content-language" content="<{$xoops_langcode}>" />
+<meta name="robots" content="<{$xoops_meta_robots}>" />
+<meta name="keywords" content="<{$xoops_meta_keywords}>" />
+<meta name="description" content="<{$xoops_meta_description}>" />
+<meta name="rating" content="<{$xoops_meta_rating}>" />
+<meta name="author" content="<{$xoops_meta_author}>" />
+<meta name="copyright" content="<{$xoops_meta_copyright}>" />
+<meta name="generator" content="XOOPS" />
+<title><{$xoops_sitename}> - <{$xoops_pagetitle}></title>
+<link href="<{$xoops_url}>/favicon.ico" rel="SHORTCUT ICON" />
+<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/xoops.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_themecss}>" />
+<!-- RMV: added module header -->
+<{$xoops_module_header}>
+
+<script type="text/javascript">
+<!--
+<{$xoops_js}>
+//-->
+</script> 
+<script type="text/javascript">
+var action;
+var i = 0;
+var amplitude=30;
+var amp=GetCookie('xtnrProtable');
+if (amp == null) {
+	amp=amplitude;
+}
+
+
+function ToggleFloating () {
+	if (amp==amplitude) {
+		amp=0;
+	} else {
+		amp=amplitude;
+	}
+	SetCookie('xtnrProtable',amp)
+}
+
+function StartGlide() {
+	this.browser = { 
+		"ie": Boolean(document.body.currentStyle), "ie5": (navigator.appVersion.indexOf("MSIE 5.5") != -1 || navigator.appVersion.indexOf("MSIE 5.0") != -1)
+	}; 
+    
+	action = window.setInterval("Glide()",10);
+	
+}
+
+
+
+function Glide() {
+	
+	i=i+0.01
+	if (!this.browser.ie) { 
+		this.browser.ie5 = false;
+		Banner.style.top = (Math.sin(i)*amp)+30+amplitude;
+		
+	} else {
+		document.all.Banner.style.pixelTop = (Math.sin(i)*amp)+30+amplitude;
+    }
+}
+
+function GetCookie (name) {  
+var arg = name + "=";  
+var alen = arg.length;  
+var clen = document.cookie.length;  
+var i = 0;  
+while (i < clen) {
+var j = i + alen;    
+if (document.cookie.substring(i, j) == arg)      
+return getCookieVal (j);    
+i = document.cookie.indexOf(" ", i) + 1;    
+if (i == 0) break;   
+}  
+return null;
+}
+
+
+
+function SetCookie (name, value) {  
+var argv = SetCookie.arguments;  
+var argc = SetCookie.arguments.length;  
+var expires = (argc > 2) ? argv[2] : null;  
+var path = (argc > 3) ? argv[3] : null;  
+var domain = (argc > 4) ? argv[4] : null;  
+var secure = (argc > 5) ? argv[5] : false;  
+document.cookie = name + "=" + escape (value) + 
+((expires == null) ? "" : ("; expires=" + expires.toGMTString())) + 
+("; path=/") + 
+((domain == null) ? "" : ("; domain=" + domain)) +    
+((secure == true) ? "; secure" : "");
+}
+
+
+function DeleteCookie (name) {  
+var exp = new Date();  
+exp.setTime (exp.getTime() - 1);   
+var cval = GetCookie (name);  
+document.cookie = name + "=" + cval + "; expires=" + exp.toGMTString();
+}
+var expDays = 1;
+var exp = new Date(); 
+exp.setTime(exp.getTime() + (expDays*24*60*60*1000));
+
+function getCookieVal(offset) {
+var endstr = document.cookie.indexOf (";", offset);
+if (endstr == -1)
+endstr = document.cookie.length;
+return unescape(document.cookie.substring(offset, endstr));
+}
+
+</script>
+
+
+<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_imageurl}>js/navmenu.css" />
+<script type=text/javascript src="<{$xoops_imageurl}>js/adminmenu.js"></script>
+<script type=text/javascript src="<{$xoops_imageurl}>js/ie5.js"></script>
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="StartGlide();" style="background-attachment:fixed; background-image: url(<{$xoops_imageurl}>images/blur.gif);background-repeat: repeat-x; background-position:bottom;">
+<div ID="Banner" style="position:absolute; top:10px;">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>&nbsp;</td>
+    <td width="950">
+<table width="950" height="417" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="3">
+			
+
+
+	     <table border=0 cellspacing=0 cellpadding=0 id="menuL" class="NavMenu">
+           <tr>
+              <td>
+	<a id="menuL-0" class="button" href="javascript:void(0)"><img src="<{$xoops_imageurl}>images/theme_01.gif" width="208" height="41" alt=""></a><div id="menuL-0-section" style="width: 119px; top: 104px; left: 76px; visibility: hidden; z-index: -1;" class="section">
+                   <table border=0 cellspacing=0 cellpadding=0>
+                     <tr>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_1.gif"></td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_2.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_2.gif"></td>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_3.gif"></td>
+                     </tr>
+                     <tr>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_4.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_4.gif"></td>
+                       <td >
+ 
+ 
+                       
+        <!-- Start left blocks loop -->
+        <{foreach item=block from=$xoops_lblocks}>
+          <a id="menu1-0-0" class="item" href="#"><{$block.title}> <img id="menu1-0-0-arrow" class="arrow" src="<{$xoops_imageurl}>js/menuarrow1.gif"></a>
+		  <div id="menu1-0-0-section" style="width: 167px; top: 15px; left: 138px; visibility: hidden; z-index: -1;" class="section">
+                   <table border=0 cellspacing=0 cellpadding=0>
+                     <tr>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_1.gif"></td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_2.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_2.gif"></td>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_3.gif"></td>
+                     </tr>
+                     <tr>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_4.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_4.gif"></td>
+                       <td style="background-color:#6286b6;">
+		  	<{$block.content}>
+                       </td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_5.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_5.gif"></td>                     </tr>
+                     <tr>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_6.gif"></td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_7.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_7.gif"></td>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_8.gif"></td>
+                     </tr>
+                   </table>
+
+		  </div>
+        <{/foreach}>
+        <!-- End left blocks loop -->
+		<{if $xoops_showrblock == 1}>
+        <!-- Start right blocks loop -->
+        <{foreach item=block from=$xoops_rblocks}>
+          <a id="menu1-0-0" class="item" href="#"><{$block.title}> <img id="menu1-0-0-arrow" class="arrow" src="<{$xoops_imageurl}>js/menuarrow1.gif"></a>
+		  <div id="menu1-0-0-section" style="width: 167px; top: 15px; left: 138px; visibility: hidden; z-index: -1;" class="section">
+                   <table border=0 cellspacing=0 cellpadding=0>
+                     <tr>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_1.gif"></td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_2.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_2.gif"></td>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_3.gif"></td>
+                     </tr>
+                     <tr>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_4.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_4.gif"></td>
+                       <td style="background-color:#6286b6;">
+		  	<{$block.content}>
+                       </td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_5.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_5.gif"></td>                     </tr>
+                     <tr>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_6.gif"></td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_7.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_7.gif"></td>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_8.gif"></td>
+                     </tr>
+                   </table>
+
+		  </div>
+        <{/foreach}>
+        <!-- End right blocks loop -->
+		<{/if}>
+ 
+                       
+                       </td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_5.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_5.gif"></td>                     </tr>
+                     <tr>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_6.gif"></td>
+                       <td background="<{$xoops_imageurl}>js/menu_cor_7.gif"><img  src="<{$xoops_imageurl}>js/menu_cor_7.gif"></td>
+                       <td><img  src="<{$xoops_imageurl}>js/menu_cor_8.gif"></td>
+                     </tr>
+                   </table>
+              </div>
+			</td>
+          </tr>
+        </table>
+
+			
+		</td>
+		<td>
+			<img src="<{$xoops_imageurl}>images/theme_02.gif" width="539" height="41" alt=""></td>
+		<td><a href="<{$xoops_url}>"><img src="<{$xoops_imageurl}>images/theme_03.gif" alt="" width="203" height="41" border="0"></a></td>
+	</tr>
+	<tr>
+		<td colspan="3" background="<{$xoops_imageurl}>images/spacer.gif">
+			<img src="<{$xoops_imageurl}>images/theme_04.gif" width="208" height="142" alt=""></td>
+		<td rowspan="3" background="<{$xoops_imageurl}>images/theme_05.jpg"><div style="height:306px;width:539px;overflow:scroll;"><table cellspacing="0">
+    <tr valign="top">
+
+      <td id="centercolumn">
+
+        <!-- Display center blocks if any -->
+        <{if $xoops_showcblock == 1}>
+
+        <table cellspacing="0">
+          <tr>
+            <td colspan="2" valign="top" id="centerCcolumn">
+
+            <!-- Start center-center blocks loop -->
+            <{foreach item=block from=$xoops_ccblocks}>
+              <{$block.content}>
+            <{/foreach}>
+            <!-- End center-center blocks loop -->
+
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" id="centerLcolumn">
+
+            <!-- Start center-left blocks loop -->
+              <{foreach item=block from=$xoops_clblocks}>
+                <{$block.content}>
+              <{/foreach}>
+            <!-- End center-left blocks loop -->
+
+            </td><td valign="top" id="centerRcolumn">
+
+            <!-- Start center-right blocks loop -->
+              <{foreach item=block from=$xoops_crblocks}>
+                <{$block.content}>
+              <{/foreach}>
+            <!-- End center-right blocks loop -->
+
+            </td>
+          </tr>
+        </table>
+
+        <{/if}>
+        <!-- End display center blocks -->
+
+        <div id="content">
+          <{$xoops_contents}>
+        </div>
+      </td>
+
+
+    </tr>
+  </table></div></td>
+		<td rowspan="3">
+			<img src="<{$xoops_imageurl}>images/theme_06.gif" alt="" width="203" height="306" border="0" usemap="#Map"></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<img src="<{$xoops_imageurl}>images/theme_07.gif" width="66" height="164" alt=""></td>
+		<td><{php}>echo ($customMainMenu);<{/php}></td>
+		<td rowspan="2"><img src="<{$xoops_imageurl}>images/theme_09.gif" width="65" height="164" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="<{$xoops_imageurl}>images/theme_10.gif" width="77" height="140" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<img src="<{$xoops_imageurl}>images/theme_11.gif" width="208" height="70" alt=""></td>
+		<td>
+			<img src="<{$xoops_imageurl}>images/theme_12.gif" width="539" height="70" usemap="#Map2"></td>
+		<td>
+			<img src="<{$xoops_imageurl}>images/theme_13.gif" width="203" height="70" usemap="#Map3"></td>
+	</tr>
+</table>	</td>
+	<td>&nbsp;</td>
+  </tr>
+</table>
+</div>
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td valign="bottom" align="center"><img src="<{$xoops_imageurl}>images/shadow.gif"></td>
+  </tr>
+</table>
+<map name="Map">
+<area shape="circle" coords="102,90,24" href="<{$xoops_url}>/user.php" alt="Login / Member Controls">
+<area shape="circle" coords="154,146,25" href="<{$xoops_url}>/search.php" alt="Search Site">
+<area shape="circle" coords="101,201,24" href="<{$xoops_url}>/user.php?op=logout" alt="Log Out">
+<area shape="circle" coords="45,147,27" href="javascript:ToggleFloating ();" alt="Toggle Hover">
+</map>
+<map name="Map2"><area shape="rect" coords="451,30,498,53" href="http://www.xoops.org" target="_blank">
+<area shape="rect" coords="511,29,555,54" href="http://www.xoopstuner.com" target="_blank">
+</map>
+<map name="Map3">
+<area shape="rect" coords="-18,30,18,54" href="http://www.xoopstuner.com" target="_blank">
+</map>
+
+<script type="text/javascript">
+	var menuL = new AdMenu("menuL");
+	menuL.position.level1.top = 1;
+		menuL.position.level1.left = -55;
+	menuL.position.levelX.top = -9;
+		menuL.position.levelX.left = 7;
+	menuL.arrow1 = "<{$xoops_imageurl}>js/menuarrow1.gif";
+	menuL.arrow2 = "<{$xoops_imageurl}>js/menuarrow1.gif";
+	menuL.type = "vertical";
+	menuL.init();
+</script>
+
+
+<script type="text/javascript">
+	var menu1 = new AdMenu("menu1");
+	menu1.position.level1.top = 1;
+		menu1.position.level1.left = 0;
+	menu1.position.levelX.top = -9;
+		menu1.position.levelX.left = 7;
+	menu1.arrow1 = "<{$xoops_imageurl}>js/menuarrow1.gif";
+	menu1.arrow2 = "<{$xoops_imageurl}>js/menuarrow1.gif";
+	menu1.type = "vertical";
+	menu1.init();
+</script>
+
+
+</body>
+</html>
